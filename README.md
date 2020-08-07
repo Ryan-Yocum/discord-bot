@@ -1,14 +1,11 @@
-# discord-bot  
+# Discord Bot  
 Node.js Dicsord Bot  
 
-# Discord Bot  
+# Installation
+Clone the repository `git clone https://github.com/rtyocum/discord-bot.git` or download the zip file.
 
-## index.js is the main working file, with cmds.js being the commands file, and config.json being the configuration file.  
+Install Node.js at https://nodejs.org/
 
-The .env file requires a TOKEN attribute.  
-TOKEN=your discord token  
+In the working directory run `npm install`, and all the dependencies will be installed.
 
-## Node JS packages  
-
-`npm install discord.js`
-`npm install dotenv`
+To use run `npm run dev` for testing and `npm run start` for deployment.
