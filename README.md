@@ -1,7 +1,5 @@
-# discord-bot  
-Node.js Dicsord Bot  
-
 # Discord Bot  
+Node.js Dicsord Bot  
 
 # Installation
 Clone the repository `git clone https://github.com/rtyocum/discord-bot.git` or download the zip file.
