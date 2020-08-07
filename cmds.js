@@ -27,6 +27,9 @@ module.exports = {
 		case 'gpg':
 			message.channel.send('Signed');
 			break;
+		case 'hi':
+			message.channel.send('Signed');
+			break;
 
 		default:
 			break;
