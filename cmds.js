@@ -17,10 +17,15 @@ module.exports = {
 			embed.setTitle('Embedded');
 			message.channel.send(embed);
 			break;
+
 		case 'pi':
 			message.channel.send('3.141592653589', {
 				reply: dc.users.cache.find('L'),
 			});
+			break;
+
+		case 'gpg':
+			message.channel.send('Signed');
 			break;
 
 		default:
