@@ -20,15 +20,8 @@ module.exports = {
 
 		case 'pi':
 			message.channel.send('3.141592653589', {
-				reply: dc.users.cache.find('L'),
+				reply: dc.users.cache.get('681600426973593611'),
 			});
-			break;
-
-		case 'gpg':
-			message.channel.send('Signed');
-			break;
-		case 'hi':
-			message.channel.send('Signed');
 			break;
 
 		default:

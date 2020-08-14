@@ -16,14 +16,14 @@ const dc = new Discord.Client();
 dc.once('ready', () => {
 	console.log('Ready!');
 	// Send hello to the general channel (The IDS are in config.json)
-	dc.channels.cache.get(config.generalId).send('Hello');
+//	dc.channels.cache.get(config.generalId).send('Hello');
 });
 
 // This event is fired every time a message is sent
 dc.on('message', message => {
 
 	// Look only in the general channel, and ignore the !rank command (This is done later) and if a message starts with the prefix (in config.json)
-	if ((message.channel.id == config.generalId) && (message.content != '!rank') && (message.content.startsWith(config.prefix))) {
+	if (((message.channel.id == config.generalId) || (message.channel.id == config.otherChannelId)) && (message.content != '!rank') && (message.content.startsWith(config.prefix))) {
 
 		// Removes the prefix from the string so it is easier to deal with
 		const msg = message.content.substr(1);
@@ -35,16 +35,27 @@ dc.on('message', message => {
 		cmds.cmds(dc, embed, msg, message, config);
 	}
 
+	// Handles the !rank command
 	else if(message.content == '!rank') {
+		// Creates a message embed
 		const embed = new Discord.MessageEmbed();
+
+		// Opens the Sqlite database in db.sqlite3
 		const db = new sqlite3.Database('./db.sqlite3', sqlite3.OPEN_READWRITE, (err) => {
 			if (err) {
+				// If error
 				return console.error(err.message);
 			}
+			// If success
 			console.log('Connected to the in-memory SQlite database.');
 		});
 
+		/* Code for !rank command
+		Use MessageEmbed and possibly
+		other libraries to display an output.
+		*/
 
+		// Close the database
 		db.close((err) => {
 			if (err) {
 				return console.error(err.message);
@@ -53,6 +64,9 @@ dc.on('message', message => {
 		});
 	}
 
+
+	// If not a discord command
+	/* Used to log when a message is  */
 	else if ((message.content.startsWith('!') == false) && message.author.id != config.botId) {
 		console.log('All others');
 		// Queries
