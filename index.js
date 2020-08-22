@@ -34,6 +34,7 @@ dc.on('message', message => {
 		// Sends to the function cmds in cmds.js
 		cmds.cmds(dc, embed, msg, message, config);
 	}
+});
 
 
 // if a user comes online, the bot will respond 'Hello @user'
