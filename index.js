@@ -1,12 +1,32 @@
 // Includes of the libraries
+const fs = require('fs').promises;
+const path = require('path');
 const Discord = require('discord.js');
 require('dotenv').config();
 const config = require('./config.json');
-const cmds = require('./cmds.js');
 
 // Create a Discord Client
 const dc = new Discord.Client();
-// const announce = new Discord.WebhookClient(process.env.HOOK, process.env.HOOK_TOKEN);
+dc.cmds = new Discord.Collection();
+
+
+(async function registerCommands(dir = 'commands') {
+	const files = await fs.readdir(path.join(__dirname, dir));
+	console.log(files);
+
+	for (const file of files) {
+		const stat = await fs.lstat(path.join(__dirname, dir, file));
+		if (stat.isDirectory()) {
+			registerCommands(path.join(dir, file));
+		}
+		else if (file.endsWith('.js')) {
+			let cmdName = file.substring(0, file.indexOf('.js'));
+			let cmdModule = require(path.join(__dirname, dir, file));
+			dc.cmds.set(cmdName, cmdModule);
+			console.log(dc.cmds);
+		}
+	}
+})();
 
 // Events
 
@@ -19,19 +39,18 @@ dc.once('ready', async () => {
 
 // This event is fired every time a message is sent
 dc.on('message', async (message) => {
-	// Look only in the general channel, and ignore the !rank command (This is done later) and if a message starts with the prefix (in config.json)
-	if (
-		message.channel.id == config.generalId ||
-		(message.channel.id == config.otherChannelId && message.content.startsWith(config.prefix))
-	) {
-		// Removes the prefix from the string so it is easier to deal with
-		const msg = message.content.substr(1);
+	if (message.author.bot) return;
+	if (!message.content.startsWith(config.prefix)) return;
+	let cmdArgs = message.content.substring(message.content.indexOf(config.prefix) + 2).split(new RegExp(/\s+/));
+	console.log(cmdArgs);
+	let cmdName = cmdArgs.shift();
+	console.log(cmdName);
 
-		// Creates a new Message Embed to work with.
-		const embed = new Discord.MessageEmbed();
-
-		// Sends to the function cmds in cmds.js
-		cmds.cmds(dc, embed, msg, message, config);
+	if (dc.cmds.get(cmdName)) {
+		dc.cmds.get(cmdName).run(dc, message, cmdArgs);
+	}
+	else {
+		message.reply('That command does not exist.');
 	}
 });
 
