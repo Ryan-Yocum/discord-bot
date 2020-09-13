@@ -1,3 +1,5 @@
+/* eslint-disable prefer-const */
+
 // Includes of the libraries
 const fs = require('fs').promises;
 const path = require('path');
@@ -7,9 +9,11 @@ const config = require('./config.json');
 
 // Create a Discord Client
 const dc = new Discord.Client();
+
+// Adds new Map ( Discord.Collection extends Map )
 dc.cmds = new Discord.Collection();
 
-
+// Automatically runs once every
 (async function registerCommands(dir = 'commands') {
 	const files = await fs.readdir(path.join(__dirname, dir));
 	console.log(files);
