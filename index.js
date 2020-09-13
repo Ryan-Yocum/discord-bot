@@ -30,6 +30,7 @@ dc.cmds = new Discord.Collection();
 
 // Events
 
+
 // Ready Event is when it connects to discord and is ready to receive events
 dc.once('ready', async () => {
 	console.log('Ready!');
