@@ -16,7 +16,6 @@ dc.cmds = new Discord.Collection();
 // Automatically runs once every
 (async function registerCommands(dir = 'commands') {
 	const files = await fs.readdir(path.join(__dirname, dir));
-	console.log(files);
 
 	for (const file of files) {
 		const stat = await fs.lstat(path.join(__dirname, dir, file));
@@ -27,7 +26,6 @@ dc.cmds = new Discord.Collection();
 			let cmdName = file.substring(0, file.indexOf('.js'));
 			let cmdModule = require(path.join(__dirname, dir, file));
 			dc.cmds.set(cmdName, cmdModule);
-			console.log(dc.cmds);
 		}
 	}
 })();
@@ -47,9 +45,7 @@ dc.on('message', async (message) => {
 	if (message.author.bot) return;
 	if (!message.content.startsWith(config.prefix)) return;
 	let cmdArgs = message.content.substring(message.content.indexOf(config.prefix) + 2).split(new RegExp(/\s+/));
-	console.log(cmdArgs);
 	let cmdName = cmdArgs.shift();
-	console.log(cmdName);
 
 	if (dc.cmds.get(cmdName)) {
 		dc.cmds.get(cmdName).run(dc, message, cmdArgs);
